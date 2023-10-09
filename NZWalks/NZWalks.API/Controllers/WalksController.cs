@@ -25,6 +25,11 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var walkDomaniModel = mapper.Map<Walk>(addWalkRequestDto);
 
             await walkRepository.CreateAsync(walkDomaniModel);
@@ -58,6 +63,11 @@ namespace NZWalks.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalk)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var walkDomainModel = mapper.Map<Walk>(updateWalk);
 
             var walkDomaniModel = await walkRepository.UpdateAsync(id, walkDomainModel);
